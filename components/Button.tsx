@@ -1,14 +1,16 @@
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonColorRed: boolean;
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
+  type?: "submit" | "reset" | "button";
 }
 
 export default function Button(props: ButtonProps) {
   return (
     <button
+      type={props.type}
       onClick={props.onClick}
       className={
         props.buttonColorRed

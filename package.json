@@ -17,12 +17,15 @@
     "bcrypt": "^5.1.1",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.3",
+    "formik": "^2.4.2",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-toastify": "^10.0.5",
-    "typescript": "5.4.5"
+    "sonner": "^1.4.41",
+    "typescript": "5.4.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

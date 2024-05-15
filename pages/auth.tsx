@@ -1,14 +1,18 @@
 import Button from "@/components/Button";
-import Input from "@/components/Input";
-import { useCallback, useState } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { useCallback, useMemo, useState } from "react";
+import Form from "@/components/form";
+import useRegister from "@/hooks/useAuth";
+
+interface InitialValues {
+  name?: string;
+  email: string;
+  password: string;
+}
 
 export default function Auth() {
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [variant, setVariant] = useState<string>("login");
+
+  const { register, login } = useRegister();
 
   const toggleVariant = useCallback(() => {
     setVariant((currentVariant) =>
@@ -16,17 +20,16 @@ export default function Auth() {
     );
   }, []);
 
-  const register = useCallback(async () => {
-    try {
-      await axios.post("/api/register", {
-        email,
-        name: username,
-        password,
-      });
-    } catch (error) {
-      toast.error("Erro ao cadastrar usuário");
+  const initialValuesMemo = useMemo(() => {
+    const initialValues: InitialValues = { name: "", email: "", password: "" };
+
+    if (variant === "login") {
+      delete initialValues.name;
+      return initialValues;
     }
-  }, [username, email, password]);
+
+    return initialValues;
+  }, [variant]);
 
   return (
     <div className="relative h-full w-full bg-[url('/images/login-screen-image.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
@@ -35,45 +38,31 @@ export default function Auth() {
           <img src="/images/logo.png" alt="logo" className="h-12" />
         </nav>
         <div className="flex justify-center">
-          <div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
+          <Form
+            initialValues={initialValuesMemo}
+            onSubmit={variant === "register" ? register : login}
+          >
             <h2 className="text-white text-4xl mb-8 font-semibold">
               {variant === "register" ? "Registre-se" : "Entrar"}
             </h2>
-            <div className="flex flex-col gap-4">
-              {variant === "register" && (
-                <Input
-                  id="username"
-                  label="Usuário"
-                  value={username}
-                  onChange={(e: any) => setUsername(e.target.value)}
-                />
-              )}
-              <Input
-                id="email"
-                label="Email"
-                value={email}
-                onChange={(e: any) => setEmail(e.target.value)}
-              />
-              <Input
-                id="password"
-                label="Senha"
-                value={password}
-                onChange={(e: any) => setPassword(e.target.value)}
-              />
-              <Button buttonColorRed onClick={register}>
-                {variant === "register" ? "Registrar" : "Login"}
-              </Button>
-              <p className="text-neutral-400 mt-12">
-                {variant === "register" ? "Já tem conta?" : "Novo por aqui?"}
-                <span
-                  onClick={toggleVariant}
-                  className="text-white ml-1 hover:underline cursor-pointer"
-                >
-                  {variant === "register" ? "Faça login" : "Crie uma conta"}
-                </span>
-              </p>
-            </div>
-          </div>
+            {variant === "register" && (
+              <Form.Input id="name" label="Usuário" name="name" />
+            )}
+            <Form.Input id="email" label="Email" name="email" />
+            <Form.Input id="password" label="Senha" name="Senha" />
+            <Button buttonColorRed type="submit">
+              {variant === "register" ? "Registrar" : "Login"}
+            </Button>
+            <p className="text-neutral-400 mt-12">
+              {variant === "register" ? "Já tem conta?" : "Novo por aqui?"}
+              <span
+                onClick={toggleVariant}
+                className="text-white ml-1 hover:underline cursor-pointer"
+              >
+                {variant === "register" ? "Faça login" : "Crie uma conta"}
+              </span>
+            </p>
+          </Form>
         </div>
       </div>
     </div>
