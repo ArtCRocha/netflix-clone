@@ -49,7 +49,7 @@ export default function Auth() {
               <Form.Input id="name" label="Usuário" name="name" />
             )}
             <Form.Input id="email" label="Email" name="email" />
-            <Form.Input id="password" label="Senha" name="Senha" />
+            <Form.Input id="password" label="Senha" name="password" />
             <Button buttonColorRed type="submit">
               {variant === "register" ? "Registrar" : "Login"}
             </Button>
