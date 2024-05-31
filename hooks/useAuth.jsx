@@ -20,6 +20,14 @@ export default function useAuth() {
     router.push("/");
   }
 
+  async function loginWithGithub() {
+    await signIn("github", { callbackUrl: "/" });
+  }
+
+  async function loginWithGoogle() {
+    await signIn("google", { callbackUrl: "/" });
+  }
+
   async function register(values) {
     try {
       await axios.post("/api/register", values);
@@ -29,5 +37,5 @@ export default function useAuth() {
     }
   }
 
-  return { register, login };
+  return { register, login, loginWithGithub, loginWithGoogle };
 }
