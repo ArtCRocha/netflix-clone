@@ -6,13 +6,14 @@ import { toast } from "sonner";
 export default function useAuth() {
   const router = useRouter();
 
-  async function login(values) {
+  async function login(values: any) {
     const result = await signIn("credentials", {
       ...values,
       redirect: false,
     });
 
     if (result?.error) {
+      console.log(result?.error);
       toast.error("Erro ao efetuar login usuário");
       return;
     }
@@ -28,7 +29,7 @@ export default function useAuth() {
     await signIn("google", { callbackUrl: "/" });
   }
 
-  async function register(values) {
+  async function register(values: any) {
     try {
       await axios.post("/api/register", values);
       login({ email: values.email, password: values.password });
