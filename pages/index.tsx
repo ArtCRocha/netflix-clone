@@ -1,7 +1,6 @@
 import Button from "@/components/Button";
 import { NextPageContext } from "next";
 import { getSession, signOut } from "next-auth/react";
-import { redirect } from "next/dist/server/api-utils";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -19,6 +18,7 @@ export async function getServerSideProps(context: NextPageContext) {
     props: {},
   };
 }
+
 export default function Home() {
   return (
     <>

@@ -10,23 +10,16 @@ export default function useAuth() {
     const result = await signIn("credentials", {
       ...values,
       redirect: false,
+      callbackUrl: "/profiles",
     });
 
     if (result?.error) {
-      console.log(result?.error);
+      console.log("Erro");
       toast.error("Erro ao efetuar login usuário");
       return;
     }
 
-    router.push("/");
-  }
-
-  async function loginWithGithub() {
-    await signIn("github", { callbackUrl: "/" });
-  }
-
-  async function loginWithGoogle() {
-    await signIn("google", { callbackUrl: "/" });
+    router.push("/profiles");
   }
 
   async function register(values: any) {
@@ -36,6 +29,14 @@ export default function useAuth() {
     } catch (error) {
       toast.error("Erro ao cadastrar usuário");
     }
+  }
+
+  async function loginWithGithub() {
+    await signIn("github", { callbackUrl: "/profiles" });
+  }
+
+  async function loginWithGoogle() {
+    await signIn("google", { callbackUrl: "/profiles" });
   }
 
   return { register, login, loginWithGithub, loginWithGoogle };
