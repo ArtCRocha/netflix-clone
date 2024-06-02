@@ -1,6 +1,9 @@
 import { isEmpty } from "lodash";
 import { BsFillPlayFill } from "react-icons/bs";
 import FavoriteButton from "./FavoriteButton";
+import { useRouter } from "next/router";
+import { BiChevronDown } from "react-icons/bi";
+import useInfoModal from "@/hooks/useInfoModal";
 
 interface MoviesListProps {
   data: Record<string, any>[];
@@ -8,6 +11,9 @@ interface MoviesListProps {
 }
 
 export default function MoviesList({ data, title }: MoviesListProps) {
+  const router = useRouter();
+  const { openModal } = useInfoModal();
+
   if (isEmpty(data)) {
     return null;
   }
@@ -40,12 +46,18 @@ export default function MoviesList({ data, title }: MoviesListProps) {
                 <div className="z-10 bg-zinc-800 p-2 lg:p-4 absolute w-full transition shadow-md rounded-b-md">
                   <div className="flex flex-row items-center gap-3">
                     <div
-                      onClick={() => {}}
+                      onClick={() => router.push(`/watch/${movie?.id}`)}
                       className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300"
                     >
                       <BsFillPlayFill size={30} />
                     </div>
                     <FavoriteButton movieId={movie?.id} />
+                    <div
+                      onClick={() => openModal(movie.id)}
+                      className="cursor-pointer ml-auto group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex items-center justify-center transition hover:bg-neutral-300"
+                    >
+                      <BiChevronDown className="text-white" size={20} />
+                    </div>
                   </div>
                   <div className="flex flex-row mt-4 gap-2 items-center gap-2">
                     <p className="text-green-400 text-[10px] lg:text-sm">

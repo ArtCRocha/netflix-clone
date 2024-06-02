@@ -9,9 +9,7 @@ export default async function handler(
 ) {
   try {
     if (req.method === "POST") {
-      const { currentUser } = await serverAuth(req);
-
-      const { movieId } = req.body;
+      const { movieId, currentUser } = req.body;
 
       const existingMovie = await prismadb.movie.findUnique({
         where: {
@@ -38,9 +36,7 @@ export default async function handler(
     }
 
     if (req.method === "DELETE") {
-      const { currentUser } = await serverAuth(req);
-
-      const { movieId } = req.body;
+      const { movieId, currentUser } = req.body;
 
       const existingMovie = await prismadb.movie.findUnique({
         where: {

@@ -1,7 +1,7 @@
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useFavoriteMovies from "@/hooks/useFavoriteMovies";
 import axios from "axios";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { AiOutlinePlus, AiOutlineCheck } from "react-icons/ai";
 
 interface FavoriteButtonProps {
@@ -22,9 +22,14 @@ export default function FavoriteButton({ movieId }: FavoriteButtonProps) {
     let response;
 
     if (isFavorite) {
-      response = await axios.delete("/api/favorite", { data: { movieId } });
+      response = await axios.delete("/api/favorite", {
+        data: { movieId, currentUser },
+      });
     } else {
-      response = await axios.post("/api/favorite", { movieId });
+      response = await axios.post("/api/favorite", {
+        movieId,
+        currentUser,
+      });
     }
 
     const updatedFavoriteIds = response?.data?.favoriteIds;
